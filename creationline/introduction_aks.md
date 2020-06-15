@@ -345,15 +345,23 @@ AKS クラスタの作成には、30 分程度時間がかかります。
 
 ### ACR のアクセスキーの有効化
 
-Azure Portal にログインします。
+Azure Portal にログインし、画面上の検索バーで「コンテナ」と入力し、検索を実行します。検索結果に「コンテナー レジストリ」をクリックします。
 
 ![ACR1](acr_access_key1.png)
 
+作成した名前でコンテナーレジストリが表示されるので、リンクをクリックします。
+
 ![ACR2](acr_access_key2.png)
+
+左メニューの「設定」-「アクセスキー」をクリックします。
 
 ![ACR3](acr_access_key3.png)
 
+管理ユーザーが「無効」となっていることを確認し、「有効」に変更します。
+
 ![ACR4](acr_access_key4.png)
+
+ログインサーバー名、ユーザー名、パスワード (password) を記録します。
 
 ![ACR5](acr_access_key5.png)
 
@@ -361,6 +369,8 @@ Azure Portal にログインします。
 ### ACR の紐付け
 
 以下のコマンドを実行して、AKS クラスタと ACR を紐づけします。
+--docker-server にログインサーバー名、--docker-username にユーザー名、--docker-password にパスワードを指定します。
+--docker-email には G メールアドレスを入力してください。
 
 ```
 kubectl create secret docker-registry docker-reg-credential \
