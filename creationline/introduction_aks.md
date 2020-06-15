@@ -243,8 +243,8 @@ $ az role assignment create \
 
 ```
 $ az aks get-versions \
-          --location japaneast \
-          --output table
+         --location japaneast \
+         --output table
 KubernetesVersion    Upgrades
 -------------------  -------------------------------------------------
 1.18.2(preview)      None available
@@ -258,3 +258,88 @@ KubernetesVersion    Upgrades
 1.14.8               1.15.10, 1.15.11
 1.14.7               1.14.8, 1.15.10, 1.15.11
 ```
+
+### AKS 用の Subnet の作成
+
+以下のコマンドを実行して、AKS 用の Subnet を作成します。
+
+```
+$ az network vnet subnet create \
+             --name aks-subnet \
+             --resource-group aks-resource-group \
+             --vnet-name aks-vnet \
+             --address-prefix 10.1.0.0/24
+{
+  "addressPrefix": "10.1.0.0/24",
+  "addressPrefixes": null,
+  "delegations": [],
+  "etag": "W/\"75398623-cbeb-4e41-a188-9bffd2b55349\"",
+  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet",
+  "ipAllocations": null,
+  "ipConfigurationProfiles": null,
+  "ipConfigurations": null,
+  "name": "aks-subnet",
+  "natGateway": null,
+  "networkSecurityGroup": null,
+  "privateEndpointNetworkPolicies": "Enabled",
+  "privateEndpoints": null,
+  "privateLinkServiceNetworkPolicies": "Enabled",
+  "provisioningState": "Succeeded",
+  "purpose": null,
+  "resourceGroup": "aks-resource-group",
+  "resourceNavigationLinks": null,
+  "routeTable": null,
+  "serviceAssociationLinks": null,
+  "serviceEndpointPolicies": null,
+  "serviceEndpoints": null,
+  "type": "Microsoft.Network/virtualNetworks/subnets"
+}
+```
+
+ここで、実行結果の id は、後述の AKS クラスタ作成時の --vnet-subnet-id に指定するので、実行結果は記録しておいてください。
+
+### 利用可能な VM サイズの確認
+
+AKS クラスタに使用する VM のサイズを確認します。以下のコマンドで、このリージョンで利用可能な VM のサイズを確認します。
+
+```
+$ az vm list-sizes \
+        --location japaneast \
+        --output table
+MaxDataDiskCount    MemoryInMb    Name                    NumberOfCores    OsDiskSizeInMb    ResourceDiskSizeInMb
+------------------  ------------  ----------------------  ---------------  ----------------  ----------------------
+24                  57344         Standard_NV6            6                1047552           389120
+48                  114688        Standard_NV12           12               1047552           696320
+64                  229376        Standard_NV24           24               1047552           1474560
+24                  57344         Standard_NV6_Promo      6                1047552           389120
+48                  114688        Standard_NV12_Promo     12               1047552           696320
+64                  229376        Standard_NV24_Promo     24               1047552           1474560
+　　　　　　　　　　　　　　　　　　　　　　:
+```
+
+### AKS の作成
+
+以下のコマンドを実行して、AKS クラスタを作成します。
+ここで、--vnet-subnet-id には、AKS 用の Subnet の ID、--service-principal と --client-secret には、
+サービスプリンシパルの実行結果の appId、および password を指定することに注意します。
+
+```
+az aks create \
+       --name aks-cluster \
+       --resource-group aks-resource-group \
+       --location japaneast \
+       --vnet-subnet-id "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet" \
+       --generate-ssh-keys \
+       --network-plugin "azure" \
+       --kubernetes-version 1.16.9 \
+       --node-count 3 \
+       --node-vm-size Standard_B2ms \
+       --max-pods 50 \
+       --dns-name-prefix aks-cluster \
+       --enable-addons monitoring,http_application_routing \
+       --service-principal "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2" \
+       --client-secret "oCiB1lXEBHOa7dByQM01B1L.t39ap8BNm_"
+```
+
+このコマンドの実行は 30 分程度時間がかかります。
+
