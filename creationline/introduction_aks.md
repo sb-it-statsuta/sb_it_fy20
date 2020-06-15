@@ -343,9 +343,19 @@ az aks create \
 
 AKS クラスタの作成には、30 分程度時間がかかります。
 
-### ACR のクレデンシャルの作成
+### ACR のアクセスキーの有効化
 
 Azure Portal にログインします。
+
+![ACR1](acr_access_key1.png)
+
+![ACR2](acr_access_key2.png)
+
+![ACR3](acr_access_key3.png)
+
+![ACR4](acr_access_key4.png)
+
+![ACR5](acr_access_key5.png)
 
 
 ### ACR の紐付け
