@@ -324,28 +324,167 @@ MaxDataDiskCount    MemoryInMb    Name                    NumberOfCores    OsDis
 サービスプリンシパルの実行結果の appId、および password を指定することに注意します。
 
 ```
-az aks create \
-       --name aks-cluster \
-       --resource-group aks-resource-group \
-       --location japaneast \
-       --vnet-subnet-id "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet" \
-       --generate-ssh-keys \
-       --network-plugin "azure" \
-       --kubernetes-version 1.16.9 \
-       --node-count 3 \
-       --node-vm-size Standard_DS1_v2 \
-       --max-pods 50 \
-       --dns-name-prefix aks-cluster \
-       --enable-addons monitoring,http_application_routing \
-       --service-principal "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2" \
-       --client-secret "oCiB1lXEBHOa7dByQM01B1L.t39ap8BNm_"
+$ az aks create \
+         --name aks-cluster \
+         --resource-group aks-resource-group \
+         --location japaneast \
+         --vnet-subnet-id "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet" \
+         --generate-ssh-keys \
+         --network-plugin "azure" \
+         --kubernetes-version 1.16.9 \
+         --node-count 3 \
+         --node-vm-size Standard_B2s \
+         --max-pods 50 \
+         --dns-name-prefix aks-cluster \
+         --enable-addons monitoring,http_application_routing \
+         --service-principal "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2" \
+         --client-secret "oCiB1lXEBHOa7dByQM01B1L.t39ap8BNm_"
+AAD role propagation done[############################################]  100.0000%{
+  "aadProfile": null,
+  "addonProfiles": {
+    "KubeDashboard": {
+      "config": null,
+      "enabled": true,
+      "identity": null
+    },
+    "httpApplicationRouting": {
+      "config": {
+        "HTTPApplicationRoutingZoneName": "a75cdd3368a347a89b22.japaneast.aksapp.io"
+      },
+      "enabled": true,
+      "identity": null
+    },
+    "omsagent": {
+      "config": {
+        "logAnalyticsWorkspaceResourceID": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourcegroups/defaultresourcegroup-ejp/providers/microsoft.operationalinsights/workspaces/defaultworkspace-24c48ca2-acd0-4711-bdd9-abc8f5870e47-ejp"
+      },
+      "enabled": true,
+      "identity": null
+    }
+  },
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": null,
+      "count": 3,
+      "enableAutoScaling": null,
+      "enableNodePublicIp": false,
+      "maxCount": null,
+      "maxPods": 50,
+      "minCount": null,
+      "mode": "System",
+      "name": "nodepool1",
+      "nodeLabels": {},
+      "nodeTaints": null,
+      "orchestratorVersion": "1.16.9",
+      "osDiskSizeGb": 128,
+      "osType": "Linux",
+      "provisioningState": "Succeeded",
+      "scaleSetEvictionPolicy": null,
+      "scaleSetPriority": null,
+      "spotMaxPrice": null,
+      "tags": null,
+      "type": "VirtualMachineScaleSets",
+      "vmSize": "Standard_B2s",
+      "vnetSubnetId": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet"
+    }
+  ],
+  "apiServerAccessProfile": null,
+  "autoScalerProfile": null,
+  "diskEncryptionSetId": null,
+  "dnsPrefix": "aks-cluster",
+  "enablePodSecurityPolicy": null,
+  "enableRbac": true,
+  "fqdn": "aks-cluster-204dcbe6.hcp.japaneast.azmk8s.io",
+  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourcegroups/aks-resource-group/providers/Microsoft.ContainerService/managedClusters/aks-cluster",
+  "identity": null,
+  "identityProfile": null,
+  "kubernetesVersion": "1.16.9",
+  "linuxProfile": {
+    "adminUsername": "azureuser",
+    "ssh": {
+      "publicKeys": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCjyVsEkGPh3030VLucq9ijEwtL0MvPujN525Jcp4NYFyx4AAc8GPy7aXHWMYGwIhrVMcicrJEV7J4zbUUo7EgvMmbHdAnN2oif6/QzHG203rLKyArUHSHsRVgx/B3pepgR+Vw4zluM6mg4JXpmyfnIUiyMcOAEi8x8v31Cispssnl3bkAJKf7TNEPI7dIn4PeQX4PI3ksWUKpjWg0XEZyT10LoWptRHrDPuTuFzNaRRyZSr7r8Y3QlOYjmPrB7n9tSx8DJEY8tsONxOEr0c4f82tN4/azHPa2dNyE4cPS1HwIUYZP8dmehzxUwsFnmFMtVvfcKTRMfC8WrrAEFESX tatsutas40@COAMAC14100266.local\n"
+        }
+      ]
+    }
+  },
+  "location": "japaneast",
+  "maxAgentPools": 10,
+  "name": "aks-cluster",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "loadBalancerProfile": {
+      "allocatedOutboundPorts": null,
+      "effectiveOutboundIps": [
+        {
+          "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/MC_aks-resource-group_aks-cluster_japaneast/providers/Microsoft.Network/publicIPAddresses/0805f526-ba63-4073-8115-90540c185ad1",
+          "resourceGroup": "MC_aks-resource-group_aks-cluster_japaneast"
+        }
+      ],
+      "idleTimeoutInMinutes": null,
+      "managedOutboundIps": {
+        "count": 1
+      },
+      "outboundIpPrefixes": null,
+      "outboundIps": null
+    },
+    "loadBalancerSku": "Standard",
+    "networkMode": null,
+    "networkPlugin": "azure",
+    "networkPolicy": null,
+    "outboundType": "loadBalancer",
+    "podCidr": null,
+    "serviceCidr": "10.0.0.0/16"
+  },
+  "nodeResourceGroup": "MC_aks-resource-group_aks-cluster_japaneast",
+  "privateFqdn": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "aks-resource-group",
+  "servicePrincipalProfile": {
+    "clientId": "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2",
+    "secret": null
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": {
+    "adminPassword": null,
+    "adminUsername": "azureuser"
+  }
+}
 ```
 
 AKS クラスタの作成には、30 分程度時間がかかります。
 
+### kubectl 用のクラスタの認証情報の取得
+
+以下のコマンドを実行して、作成した AKS クラスタの認証情報を取得し、kubectl でクラスタを認識できるように構成します。
+
+```
+$ az aks get-credentials \
+         --name aks-cluster  \
+         --resource-group aks-resource-group
+Merged "aks-cluster" as current context in /Users/tatsutas40/.kube/config
+```
+
+以下のコマンドを実行し、クラスタを構成するノードが表示されば、構築は完了です。
+
+```
+$ kubectl get node
+NAME                                STATUS   ROLES   AGE     VERSION
+aks-nodepool1-11466683-vmss000000   Ready    agent   5m49s   v1.16.9
+aks-nodepool1-11466683-vmss000001   Ready    agent   6m1s    v1.16.9
+aks-nodepool1-11466683-vmss000002   Ready    agent   5m57s   v1.16.9
+```
+
 ### ACR のアクセスキーの有効化
 
-Azure Portal にログインし、画面上の検索バーで「コンテナ」と入力し、検索を実行します。検索結果に「コンテナー レジストリ」をクリックします。
+Azure Portal にログインし、画面上の検索バーで「コンテナ」と入力し、検索を実行します。検索結果の「コンテナー レジストリ」をクリックします。
 
 ![ACR1](acr_access_key1.png)
 
@@ -365,7 +504,6 @@ Azure Portal にログインし、画面上の検索バーで「コンテナ」�
 
 ![ACR5](acr_access_key5.png)
 
-
 ### ACR の紐付け
 
 以下のコマンドを実行して、AKS クラスタと ACR を紐づけします。
@@ -373,19 +511,20 @@ Azure Portal にログインし、画面上の検索バーで「コンテナ」�
 --docker-email には G メールアドレスを入力してください。
 
 ```
-kubectl create secret docker-registry docker-reg-credential \
-        --docker-server=spadregistory.azurecr.io \
-        --docker-username=spadregistory \
-        --docker-password="7g0e8jQo8xNLDac150QDfjbDC=OumoFJ" \
-        --docker-email=shigeru.sb.it@gmail.com
+$ kubectl create secret docker-registry docker-reg-credential \
+          --docker-server=sbitshigeruregistory.azurecr.io \
+          --docker-username=sbitshigeruregistory \
+          --docker-password="GP8/EWXMwfku2mcw/w0KyPl1DbknQ89u" \
+          --docker-email=shigeru.sb.it@gmail.com
+
+secret/docker-reg-credential created
 ```
 
-### kubectl 用のクラスタの認証情報の取得
-
-以下のコマンドを実行して、作成した AKS クラスタの認証情報を取得し、kubectl でクラスタを認識できるように構成します。
+以下のコマンドを実行して、docker-reg-credential が表示されていることを確認します。
 
 ```
-az aks get-credentials \
-       --name aks-cluster  \
-       --resource-group aks-resource-group
+$ kubectl get secret
+NAME                    TYPE                                  DATA   AGE
+default-token-mvnns     kubernetes.io/service-account-token   3      19m
+docker-reg-credential   kubernetes.io/dockerconfigjson        1      10m
 ```
