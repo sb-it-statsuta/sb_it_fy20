@@ -149,10 +149,10 @@ AKS が使用する Virtual Network を作成します。以下のコマンド�
 
 ```
 $ az network vnet create \
->            --name aks-vnet \
->            --resource-group aks-resource-group \
->            --location japaneast \
->            --address-prefixes 10.1.0.0/16
+             --name aks-vnet \
+             --resource-group aks-resource-group \
+             --location japaneast \
+             --address-prefixes 10.1.0.0/16
 {
   "newVNet": {
     "addressSpace": {
